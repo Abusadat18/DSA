@@ -4,20 +4,31 @@ function Node(value) {
 }
 
 function LinkedList(value) {
-  let head = Node(value);
-  let tail = head;
+  let head = null;
+  let tail = null;
 
   /* Append at end */
   function append(value) {
     let temp = Node(value);
-    this.tail.next = temp;
-    this.tail = temp;
+
+    if (!this.head && !this.tail) {
+      this.tail = temp;
+      this.head = temp;
+    } else {
+      this.tail.next = temp;
+      this.tail = temp;
+    }
   }
 
   function prepend(value) {
     let temp = Node(value);
-    temp.next = this.head;
-    this.head = temp;
+    if (!this.head && !this.tail) {
+      this.tail = temp;
+      this.head = temp;
+    } else {
+      temp.next = this.head;
+      this.head = temp;
+    }
   }
 
   function size() {
@@ -89,6 +100,29 @@ function LinkedList(value) {
     return output;
   }
 
+  function insertAt(value, index) {
+    if (index === 0) {
+      this.prepend(value);
+    } else {
+      let previousNode = this.at(index - 1);
+      let nextNode = previousNode.next;
+      let newNode = Node(value);
+      previousNode.next = newNode;
+      newNode.next = nextNode;
+    }
+  }
+
+  function removeAt(index) {
+    if (index === 0) {
+      this.head = this.head.next;
+    } else {
+      let previousNode = this.at(index - 1);
+      let nodeToRemove = previousNode.next;
+      let nextNode = nodeToRemove.next;
+      previousNode.next = nextNode;
+    }
+  }
+
   return {
     head,
     tail,
@@ -102,14 +136,22 @@ function LinkedList(value) {
     contains,
     find,
     toString,
+    insertAt,
+    removeAt,
   };
 }
 
-let a = LinkedList(10);
+const a = LinkedList(); /* EMPTY LINKED LIST */
+a.append(10);
 a.append(20);
-a.append(30);
-a.append(40);
-a.append(50);
+a.prepend(5);
+a.prepend(15);
+a.append(35);
 a.pop();
-const str = a.toString();
-console.log(str);
+a.insertAt(80, 2);
+a.insertAt(90, 0);
+a.insertAt(100, 6);
+a.removeAt(0);
+
+const output = a.toString();
+console.log(output);
