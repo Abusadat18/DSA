@@ -3,7 +3,7 @@ function Node(value) {
   return { value, next };
 }
 
-function LinkedList(value) {
+export function LinkedList() {
   let head = null;
   let tail = null;
 
