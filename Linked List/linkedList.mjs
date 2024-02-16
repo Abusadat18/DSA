@@ -3,36 +3,35 @@ function Node(value) {
   return { value, next };
 }
 
-export function LinkedList() {
+function LinkedList() {
   let head = null;
   let tail = null;
 
   /* Append at end */
   function append(value) {
     let temp = Node(value);
-
-    if (!this.head && !this.tail) {
-      this.tail = temp;
-      this.head = temp;
+    if (!head) {
+      tail = temp;
+      head = temp;
     } else {
-      this.tail.next = temp;
-      this.tail = temp;
+      tail.next = temp;
+      tail = temp;
     }
   }
 
   function prepend(value) {
     let temp = Node(value);
-    if (!this.head && !this.tail) {
-      this.tail = temp;
-      this.head = temp;
+    if (!head && !tail) {
+      tail = temp;
+      head = temp;
     } else {
-      temp.next = this.head;
-      this.head = temp;
+      temp.next = head;
+      head = temp;
     }
   }
 
   function size() {
-    let temp = this.head;
+    let temp = head;
     let count = 0;
     while (temp) {
       count++;
@@ -42,17 +41,17 @@ export function LinkedList() {
   }
 
   function getHead() {
-    return this.head;
+    return head;
   }
 
   function getTail() {
-    return this.tail;
+    return tail;
   }
 
   function at(index) {
-    const size = this.size();
-    let temp = this.head;
-    for (let i = 0; i < size; i++) {
+    const length = size();
+    let temp = head;
+    for (let i = 0; i < length; i++) {
       if (i === index) {
         return temp;
       }
@@ -61,14 +60,18 @@ export function LinkedList() {
   }
 
   function pop() {
-    const size = this.size();
-    let temp = this.at(size - 2);
-    this.tail = temp;
-    temp.next = null;
+    const length = size();
+    if (length === 1) {
+      head = null;
+    } else {
+      let temp = at(length - 2);
+      tail = temp;
+      temp.next = null;
+    }
   }
 
   function contains(value) {
-    let temp = this.head;
+    let temp = head;
     while (temp) {
       if (temp.value === value) {
         return true;
@@ -79,7 +82,7 @@ export function LinkedList() {
   }
 
   function find(value) {
-    let temp = this.head;
+    let temp = head;
     while (temp) {
       if (temp.value === value) {
         return temp;
@@ -90,7 +93,10 @@ export function LinkedList() {
   }
 
   function toString() {
-    let temp = this.head;
+    let temp = head;
+    if (!temp) {
+      return "Linked List is empty";
+    }
     let output = "";
     while (temp) {
       output += `${temp.value}-->`;
@@ -102,9 +108,9 @@ export function LinkedList() {
 
   function insertAt(value, index) {
     if (index === 0) {
-      this.prepend(value);
+      prepend(value);
     } else {
-      let previousNode = this.at(index - 1);
+      let previousNode = at(index - 1);
       let nextNode = previousNode.next;
       let newNode = Node(value);
       previousNode.next = newNode;
@@ -114,9 +120,9 @@ export function LinkedList() {
 
   function removeAt(index) {
     if (index === 0) {
-      this.head = this.head.next;
+      head = head.next;
     } else {
-      let previousNode = this.at(index - 1);
+      let previousNode = at(index - 1);
       let nodeToRemove = previousNode.next;
       let nextNode = nodeToRemove.next;
       previousNode.next = nextNode;
@@ -124,8 +130,6 @@ export function LinkedList() {
   }
 
   return {
-    head,
-    tail,
     append,
     prepend,
     size,
@@ -145,13 +149,17 @@ const a = LinkedList(); /* EMPTY LINKED LIST */
 a.append(10);
 a.append(20);
 a.prepend(5);
-a.prepend(15);
+a.append(30);
 a.append(35);
-a.pop();
+a.append(40);
+a.append(50);
+console.log(a.size());
+console.log(a.at(3));
 a.insertAt(80, 2);
-a.insertAt(90, 0);
-a.insertAt(100, 6);
 a.removeAt(0);
-
+a.removeAt(3);
+a.removeAt(a.size() - 1);
+a.insertAt(100, a.size() - 1);
+a.insertAt(120, 0);
 const output = a.toString();
 console.log(output);
