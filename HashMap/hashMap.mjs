@@ -93,7 +93,19 @@ function hashMap() {
     });
   }
 
-  return { set, get, has, remove, length, clear };
+  function keys() {
+    let keyArray = [];
+    storage.forEach((bucket) => {
+      let temp = bucket.getHead();
+      while (temp) {
+        keyArray.push(temp.key);
+        temp = temp.next;
+      }
+    });
+    return keyArray;
+  }
+
+  return { set, get, has, remove, length, clear, keys };
 }
 
 let a = hashMap();
@@ -106,5 +118,3 @@ a.set("Bobita", "Roltu");
 a.set("Sobita", "golu");
 a.set("chobit", "molu");
 a.set("binjsad", "hee");
-
-console.log(a.length());
