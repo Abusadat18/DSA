@@ -105,7 +105,29 @@ function hashMap() {
     return keyArray;
   }
 
-  return { set, get, has, remove, length, clear, keys };
+  function values() {
+    let valueArray = [];
+    storage.forEach((bucket) => {
+      let temp = bucket.getHead();
+      while (temp) {
+        valueArray.push(temp.value);
+        temp = temp.next;
+      }
+    });
+    return valueArray;
+  }
+
+  function entries() {
+    const keyArray = keys();
+    const valueArray = values();
+    const comboArray = Array(keyArray.length);
+    for (let i = 0; i < keyArray.length; i++) {
+      comboArray[i] = [keyArray[i], valueArray[i]];
+    }
+    return comboArray;
+  }
+
+  return { set, get, has, remove, length, clear, keys, values, entries };
 }
 
 let a = hashMap();
@@ -113,8 +135,3 @@ let a = hashMap();
 a.set("Carlos", "I am the old value");
 a.set("Arman", "NEET broo");
 a.set("Binish", "Webjee broo");
-a.set("Nobita", "Heee");
-a.set("Bobita", "Roltu");
-a.set("Sobita", "golu");
-a.set("chobit", "molu");
-a.set("binjsad", "hee");
