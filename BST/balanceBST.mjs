@@ -48,7 +48,7 @@ function Tree(array) {
     /* RECURSIVE CASE */
     if (rootNode.data > value) {
       rootNode.left = deletee(value, rootNode.left);
-    } else {
+    } else if (rootNode.data < value) {
       rootNode.right = deletee(value, rootNode.right);
     }
 
@@ -76,7 +76,21 @@ function Tree(array) {
     return rootNode;
   }
 
-  return { root, insert, deletee };
+  function find(value, rootNode = root) {
+    if (rootNode === null) {
+      return null;
+    }
+
+    if (rootNode.data > value) {
+      return find(value, rootNode.left);
+    } else if (rootNode.data < value) {
+      return find(value, rootNode.right);
+    } else {
+      return rootNode;
+    }
+  }
+
+  return { root, insert, deletee, find };
 }
 
 function removeDuplicate(arr) {
@@ -108,5 +122,6 @@ let tree = Tree(arr);
 tree.insert(10);
 tree.insert(12);
 tree.deletee(11);
+console.log(tree.find(12));
 
 prettyPrint(tree.root);
