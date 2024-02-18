@@ -90,7 +90,65 @@ function Tree(array) {
     }
   }
 
-  return { root, insert, deletee, find };
+  function levelOrder() {
+    let arr = [root];
+    let orderArr = [];
+    while (arr.length) {
+      if (arr[0] === null) {
+        arr.shift();
+      } else {
+        orderArr.push(arr[0].data);
+        arr.push(arr[0].left);
+        arr.push(arr[0].right);
+        arr.shift();
+      }
+    }
+    return orderArr;
+  }
+
+  function inorder(arr = [], node = root) {
+    if (node === null) {
+      return;
+    }
+
+    inorder(arr, node.left);
+    arr.push(node.data);
+    inorder(arr, node.right);
+    return arr;
+  }
+
+  function preOrder(arr = [], node = root) {
+    if (node === null) {
+      return;
+    }
+
+    arr.push(node.data);
+    preOrder(arr, node.left);
+    preOrder(arr, node.right);
+    return arr;
+  }
+
+  function postOrder(arr = [], node = root) {
+    if (node === null) {
+      return;
+    }
+
+    postOrder(arr, node.left);
+    postOrder(arr, node.right);
+    arr.push(node.data);
+    return arr;
+  }
+
+  return {
+    root,
+    insert,
+    deletee,
+    find,
+    levelOrder,
+    inorder,
+    preOrder,
+    postOrder,
+  };
 }
 
 function removeDuplicate(arr) {
@@ -117,11 +175,11 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
 };
 
 /* let arr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]; */
-let arr = [1, 2, 3, 4, 9, 11, 20];
+let arr = [1, 2, 3, 4, 5, 6, 7];
 let tree = Tree(arr);
-tree.insert(10);
-tree.insert(12);
-tree.deletee(11);
-console.log(tree.find(12));
 
 prettyPrint(tree.root);
+console.log(tree.levelOrder());
+console.log(tree.inorder());
+console.log(tree.preOrder());
+console.log(tree.postOrder());
