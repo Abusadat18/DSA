@@ -8,7 +8,7 @@ function Node(data) {
   };
 }
 
-function Tree(array) {
+export function Tree(array) {
   let modifiedArr = mergeSort(array, 0, array.length - 1); /* Sorting it */
   modifiedArr = removeDuplicate(modifiedArr); /* Removing duplicates */
 
@@ -199,7 +199,6 @@ function Tree(array) {
   };
 
   return {
-    root,
     insert,
     deletee,
     find,
