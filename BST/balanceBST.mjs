@@ -161,6 +161,43 @@ function Tree(array) {
     }
   }
 
+  function isBalanced(node = root) {
+    if (node === null) {
+      return true;
+    }
+
+    let lh = height(node.left);
+    let rh = height(node.right);
+
+    if (
+      Math.abs(lh - rh) <= 1 &&
+      isBalanced(node.left) &&
+      isBalanced(node.right)
+    ) {
+      return true;
+    }
+
+    return false;
+  }
+
+  function rebalance() {
+    let newArr = removeDuplicate(inorder());
+    root = buildTree(newArr, 0, newArr.length - 1);
+  }
+
+  const prettyPrint = (node = root, prefix = "", isLeft = true) => {
+    if (node === null) {
+      return;
+    }
+    if (node.right !== null) {
+      prettyPrint(node.right, `${prefix}${isLeft ? "│   " : "    "}`, false);
+    }
+    console.log(`${prefix}${isLeft ? "└── " : "┌── "}${node.data}`);
+    if (node.left !== null) {
+      prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
+    }
+  };
+
   return {
     root,
     insert,
@@ -172,6 +209,9 @@ function Tree(array) {
     postOrder,
     height,
     depth,
+    isBalanced,
+    rebalance,
+    prettyPrint,
   };
 }
 
@@ -185,24 +225,4 @@ function removeDuplicate(arr) {
   return unique;
 }
 
-const prettyPrint = (node, prefix = "", isLeft = true) => {
-  if (node === null) {
-    return;
-  }
-  if (node.right !== null) {
-    prettyPrint(node.right, `${prefix}${isLeft ? "│   " : "    "}`, false);
-  }
-  console.log(`${prefix}${isLeft ? "└── " : "┌── "}${node.data}`);
-  if (node.left !== null) {
-    prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
-  }
-};
-
 /* let arr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]; */
-let arr = [1, 2, 3, 4, 5, 6, 7];
-let tree = Tree(arr);
-
-prettyPrint(tree.root);
-
-console.log(tree.height(tree.find(4)));
-console.log(tree.depth(tree.find(3)));
