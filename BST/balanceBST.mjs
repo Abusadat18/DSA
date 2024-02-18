@@ -27,20 +27,56 @@ function Tree(array) {
   }
 
   function insert(value, rootNode = root) {
-    let temp = rootNode;
-
-    if (temp === null) {
+    if (rootNode === null) {
       return Node(value);
     }
-    if (temp.data > value) {
-      temp.left = insert(value, temp.left);
+
+    if (rootNode.data > value) {
+      rootNode.left = insert(value, rootNode.left);
     } else {
-      temp.right = insert(value, temp.right);
+      rootNode.right = insert(value, rootNode.right);
     }
-    return temp;
+    return rootNode;
   }
 
-  return { root, insert };
+  function deletee(value, rootNode = root) {
+    /* BASE CASE */
+    if (rootNode === null) {
+      return rootNode;
+    }
+
+    /* RECURSIVE CASE */
+    if (rootNode.data > value) {
+      rootNode.left = deletee(value, rootNode.left);
+    } else {
+      rootNode.right = deletee(value, rootNode.right);
+    }
+
+    /* IF ZERO CHILD */
+    if (rootNode.data === value && !rootNode.left && !rootNode.right) {
+      return null;
+    }
+
+    /* IF ONE CHILD EXIST */
+    if (rootNode.data === value && !rootNode.left && rootNode.right) {
+      return rootNode.right;
+    } else if (rootNode.data === value && rootNode.left && !rootNode.right) {
+      return rootNode.left;
+    }
+
+    /* IF BOTH CHILD EXISTS */
+    if (rootNode.data === value && rootNode.left && rootNode.right) {
+      let succ = rootNode.right;
+      while (succ.left) {
+        succ = succ.left;
+      }
+      deletee(succ.data);
+      rootNode.data = succ.data;
+    }
+    return rootNode;
+  }
+
+  return { root, insert, deletee };
 }
 
 function removeDuplicate(arr) {
@@ -71,5 +107,6 @@ let arr = [1, 2, 3, 4, 9, 11, 20];
 let tree = Tree(arr);
 tree.insert(10);
 tree.insert(12);
+tree.deletee(11);
 
 prettyPrint(tree.root);
