@@ -1,8 +1,4 @@
-let arr = [3, 2, 1, 13, 8, 5, 0, 1];
-let ans = mergeSort(arr, 0, arr.length - 1);
-console.log(ans);
-
-function mergeSort(arr, s, e) {
+export function mergeSort(arr, s, e) {
   if (s >= e) {
     return [arr[s]];
   }
